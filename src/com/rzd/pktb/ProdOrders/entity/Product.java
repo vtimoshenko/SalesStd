@@ -7,11 +7,13 @@ public class Product {
     private int id;
     private long supplyPrice;
     private String vendorCode;
+    private String office;
 
-    public Product(int id, long supplyPrice, String vendorCode) {
+    public Product(int id, long supplyPrice, String vendorCode, String office) {
         this.id = id;
         this.supplyPrice = supplyPrice;
         this.vendorCode = vendorCode;
+        this.office = office;
     }
 
     public String getInfo(){
@@ -40,5 +42,13 @@ public class Product {
 
     public void setVendorCode(String vendorCode) {
         this.vendorCode = vendorCode;
+    }
+
+    public String getOffice() {
+        return office;
+    }
+
+    public void setOffice(String office) {
+        this.office = office;
     }
 }

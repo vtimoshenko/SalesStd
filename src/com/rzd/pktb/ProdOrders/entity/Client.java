@@ -6,14 +6,16 @@ package com.rzd.pktb.ProdOrders.entity;
 public class Client {
     private int id;
     private String FIO;
+    private String office;
 
-    public Client(int id, String FIO) {
+    public Client(int id, String FIO, String office) {
         this.id = id;
         this.FIO = FIO;
+        this.office = office;
     }
 
     public String getInfo(){
-        return "\r\nClient " + FIO + " (id=" + id + ")";
+        return "\r\nClient " + FIO + " (id=" + id + ") from " + office;
     }
 
     public int getId() {
@@ -30,5 +32,13 @@ public class Client {
 
     public void setFIO(String FIO) {
         this.FIO = FIO;
+    }
+
+    public String getOffice() {
+        return office;
+    }
+
+    public void setOffice(String office) {
+        this.office = office;
     }
 }

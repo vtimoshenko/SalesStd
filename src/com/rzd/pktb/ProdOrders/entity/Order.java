@@ -10,8 +10,9 @@ import java.util.List;
 public class Order {
     private int id;
     private int managerId;
-    private Date date;
+    private String date;
     private List<OrderItem> items;
+    private String office;
 
     public void addItem(OrderItem item) {
         items.add(item);
@@ -21,16 +22,17 @@ public class Order {
         return items;
     }
 
-    public Order(int id, int managerId, Date date) {
+    public Order(int id, int managerId, String date, String office) {
         this.id = id;
         this.managerId = managerId;
         this.date = date;
         items = new LinkedList<OrderItem>();
+        this.office = office;
     }
 
     public String getInfo(){
         StringBuffer buf = new StringBuffer();
-        buf.append("\r\nOrder №" + id + " by manager #" + managerId + " (" + date.toString() + ")");
+        buf.append("\r\nOrder №" + id + " by manager #" + managerId + " (" + date.toString() + ") from " + office);
         for (OrderItem item : items)
         {
             buf.append(item.getInfo() );
@@ -54,11 +56,19 @@ public class Order {
         this.managerId = managerId;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getOffice() {
+        return office;
+    }
+
+    public void setOffice(String office) {
+        this.office = office;
     }
 }

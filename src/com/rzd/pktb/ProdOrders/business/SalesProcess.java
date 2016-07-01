@@ -17,7 +17,8 @@ public class SalesProcess {
     }
 
     public String startProcess(){
-        try {
+        /*try {
+
             db.createClient(new Client(0, "Иванов Иван Иваныч"));
             db.createClient(new Client(1, "Петров Петр Петрович"));
 
@@ -44,10 +45,12 @@ public class SalesProcess {
             checkObjects.append(db.getProduct(2).getInfo());
 
             checkObjects.append(db.getOrder(0).getInfo());
+
             return checkObjects.toString();
         } catch (CRUDException e) {
             e.printStackTrace();
             return "Something wrong";
         }
+     */return "";
     }
 }

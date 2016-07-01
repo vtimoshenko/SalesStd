@@ -1,0 +1,22 @@
+{
+    "dataSources" : [
+        "Test" : {
+            "type" : "com.rzd.pktb.ProdOrders.fakeDB.simpleSales",
+            "offices" : ["Тест"],
+            "minLat" : "100",
+            "maxLat" : "500"
+        },
+        "MoscowJ" : {
+            "type" : "com.rzd.pktb.ProdOrders.jsonDB.jsonSales",
+            "offices" : ["Москва 1", "Москва 2", "М. область юг"],
+            "minLat" : "400",
+            "maxLat" : "2000"
+        },
+        "Vladivostok" : {
+            "type" : "com.rzd.pktb.ProdOrders.jsonDB.jsonSales",
+            "offices" : ["Владивосток 1", "Д.Вост. округ"],
+            "minLat" : "1000",
+            "maxLat" : "8000"
+        }
+    ]
+}

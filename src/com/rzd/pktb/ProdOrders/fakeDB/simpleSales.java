@@ -10,92 +10,147 @@ import java.util.Date;
  * Created by SimpleUser on 08.06.2016.
  */
 public class simpleSales implements salesCRUD {
-
-    public void createClient(Client client) throws CRUDException {
-        if (client==null) throw new CRUDException("Client is null");
-        else return;
+    @Override
+    public boolean createClient(Client client) throws CRUDException {
+        if (client==null) throw new CRUDException("client is null");
+        return true;
     }
 
-    public void createManager(Manager manager) throws CRUDException {
-        if (manager==null) throw new CRUDException("Manager is null");
-        else return;
+    @Override
+    public Client readClient(int clientId) throws CRUDException {
+        if (clientId!=0) throw new CRUDException("unknown client with id=" + clientId);
+        return new Client(0, "Покупаев Клиент Потребителевич", "Тест");
     }
 
-    public void createOrder(Order order) throws CRUDException {
-        if (order==null) throw new CRUDException("Order is null");
-        else return;
+    @Override
+    public boolean updateClient(int clientId, Client client) throws CRUDException {
+        if (client==null) throw new CRUDException("client is null");
+        if (clientId!=0) throw new CRUDException("unknown client with id=" + clientId);
+        return true;
     }
 
-    public void createProduct(Product product) throws CRUDException {
-        if (product==null) throw new CRUDException("Product is null");
-        else return;
+    @Override
+    public boolean deleteClient(int clientId) throws CRUDException {
+        if (clientId!=0) throw new CRUDException("unknown client with id=" + clientId);
+        return true;
     }
 
-    public void deleteClient(int clientId) throws CRUDException {
-        if (clientId<0) throw new CRUDException("Invalid Id");
-        else return;
+    @Override
+    public int countClient() {
+        return 1;
     }
 
-    public void deleteManager(int managerId) throws CRUDException {
-        if (managerId<0) throw new CRUDException("Invalid Id");
-        else return;
+    @Override
+    public int nextIdClient() {
+        return 1;
     }
 
-    public void deleteOrder(int orderId) throws CRUDException {
-        if (orderId<0) throw new CRUDException("Invalid Id");
-        else return;
+    @Override
+    public boolean createManager(Manager manager) throws CRUDException {
+        if (manager==null) throw new CRUDException("manager is null");
+        return true;
     }
 
-    public void deleteProduct(int productId) throws CRUDException {
-        if (productId<0) throw new CRUDException("Invalid Id");
-        else return;
+    @Override
+    public Manager readManager(int managerId) throws CRUDException {
+        if (managerId!=0) throw new CRUDException("unknown manager with id=" + managerId);
+        return new Manager(0, "Задвигаев Продаван Втюхович", "Тест");
     }
 
-    public Client getClient(int clientId) throws CRUDException {
-        Client client = new Client(0, "Пупкин Василий Виссарионович");
-        return client;
+    @Override
+    public boolean updateManager(int managerId, Manager manager) throws CRUDException {
+        if (manager==null) throw new CRUDException("manager is null");
+        if (managerId!=0) throw new CRUDException("unknown manager with id=" + managerId);
+        return true;
     }
 
-    public Manager getManager(int managerId) throws CRUDException {
-        Manager manager = new Manager(0, "Зильберштейн Акакий петрович");
-        return manager;
+    @Override
+    public boolean deleteManager(int managerId) throws CRUDException {
+        if (managerId!=0) throw new CRUDException("unknown manager with id=" + managerId);
+        return true;
     }
 
-    public Order getOrder(int orderId) throws CRUDException {
-        Order order = new Order(0, 0, new Date());
+    @Override
+    public int countManager() {
+        return 1;
+    }
+
+    @Override
+    public int nextIdManager() {
+        return 1;
+    }
+
+    @Override
+    public boolean createOrder(Order order) throws CRUDException {
+        if (order==null) throw new CRUDException("order is null");
+        return true;
+    }
+
+    @Override
+    public Order readOrder(int orderId) throws CRUDException {
+        if (orderId!=0) throw new CRUDException("unknown order with id=" + orderId);
+        Order order = new Order(0, 0, "2000-01-01", "Тест");
         order.addItem(new OrderItem(0, 1, 50000));
         order.addItem(new OrderItem(1, 2, 2500));
         return order;
     }
 
-    public Product getProduct(int productId) throws CRUDException {
-        Product product = new Product(0, 90000, "Gibson SG Special");
+    @Override
+    public boolean updateOrder(int orderId, Order order) throws CRUDException {
+        if (order==null) throw new CRUDException("order is null");
+        if (orderId!=0) throw new CRUDException("unknown order with id=" + orderId);
+        return true;
+    }
+
+    @Override
+    public boolean deleteOrder(int orderId) throws CRUDException {
+        if (orderId!=0) throw new CRUDException("unknown order with id=" + orderId);
+        return true;
+    }
+
+    @Override
+    public int countOrder() {
+        return 1;
+    }
+
+    @Override
+    public int nextIdOrder() {
+        return 1;
+    }
+
+    @Override
+    public boolean createProduct(Product product) throws CRUDException {
+        if (product==null) throw new CRUDException("product is null");
+        return false;
+    }
+
+    @Override
+    public Product readProduct(int productId) throws CRUDException {
+        if (productId!=0) throw new CRUDException("unknown product with id=" + productId);
+        Product product = new Product(0, 90000, "Gibson SG Special", "Тест");
         return product;
     }
 
-    public void updateClient(int clientId, Client client) throws CRUDException {
-        if (clientId<0) throw new CRUDException("Invalid Id");
-        if (client==null) throw new CRUDException("Client is null");
-        else return;
+    @Override
+    public boolean updateProduct(int productId, Product product) throws CRUDException {
+        if (product==null) throw new CRUDException("product is null");
+        if (productId!=0) throw new CRUDException("unknown product with id=" + productId);
+        return true;
     }
 
-    public void updateManager(int managerId, Manager manager) throws CRUDException {
-        if (managerId<0) throw new CRUDException("Invalid Id");
-        if (manager==null) throw new CRUDException("Manager is null");
-        else return;
+    @Override
+    public boolean deleteProduct(int productId) throws CRUDException {
+        if (productId!=0) throw new CRUDException("unknown product with id=" + productId);
+        return true;
     }
 
-    public void updateOrder(int orderId, Order order) throws CRUDException {
-        if (orderId<0) throw new CRUDException("Invalid Id");
-        if (order==null) throw new CRUDException("Order is null");
-        else return;
+    @Override
+    public int countProduct() {
+        return 1;
     }
 
-    public void updateProduct(int productId, Product product) throws CRUDException {
-        if (productId<0) throw new CRUDException("Invalid Id");
-        if (product==null) throw new CRUDException("Product is null");
-        else return;
+    @Override
+    public int nextIdProduct() {
+        return 1;
     }
-
-
 }

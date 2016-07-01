@@ -13,6 +13,27 @@ import java.util.Date;
  */
 public class jsonSales implements salesCRUD {
     private ClusterOne db;
+    private String fileName;
+
+    public jsonSales(String fname) {
+        this.fileName = fname;
+        load();
+    }
+
+    private void load(){
+        try {
+            db.GetFromFile(this.fileName);
+        } catch (ClusterException e) {
+            e.printStackTrace();
+        }
+    }
+    private void save(){
+        try {
+            db.SetToFile(this.fileName);
+        } catch (ClusterException e) {
+            e.printStackTrace();
+        }
+    }
 
     private boolean checkDB() throws CRUDException {
         if (db==null) {
@@ -32,37 +53,48 @@ public class jsonSales implements salesCRUD {
         }
     }
 
-    public void createClient(Client client) throws CRUDException {
+    @Override
+    public boolean createClient(Client client) throws CRUDException {
+        if (client==null) throw new CRUDException("client is null");
         checkDB();
         try {
             db.CreateObject("Clients", "" + client.getId());
             db.put("Clients." + client.getId(), "id", ""+client.getId());
             db.put("Clients." + client.getId(), "FIO", client.getFIO());
+            db.put("Clients." + client.getId(), "office", client.getOffice());
         } catch (ClusterException ce) {
             ce.printErrorReport();
             throw new CRUDException("Problem with JSON DB");
         }
+        return true;
     }
 
-    public void createManager(Manager manager) throws CRUDException {
+    @Override
+    public boolean createManager(Manager manager) throws CRUDException {
+        if (manager==null) throw new CRUDException("manager is null");
         checkDB();
         try {
             db.CreateObject("Managers", "" + manager.getId());
             db.put("Managers." + manager.getId(), "id", ""+manager.getId());
             db.put("Managers." + manager.getId(), "FIO", manager.getFIO());
+            db.put("Managers." + manager.getId(), "office", manager.getOffice());
         } catch (ClusterException ce) {
             ce.printErrorReport();
             throw new CRUDException("Problem with JSON DB");
         }
+        return true;
     }
 
-    public void createOrder(Order order) throws CRUDException {
+    @Override
+    public boolean createOrder(Order order) throws CRUDException {
+        if (order==null) throw new CRUDException("order is null");
         checkDB();
         try {
             db.CreateObject("Orders", "" + order.getId());
             db.put("Orders." + order.getId(), "id", ""+order.getId());
-            db.put("Orders." + order.getId(), "date", order.getDate().toString());
+            db.put("Orders." + order.getId(), "date", order.getDate());
             db.put("Orders." + order.getId(), "managerId", ""+order.getManagerId());
+            db.put("Orders." + order.getId(), "office", order.getOffice());
             db.CreateArray("Orders." + order.getId(),"Items");
             for (OrderItem item : order.getItems())
             {
@@ -75,22 +107,28 @@ public class jsonSales implements salesCRUD {
             ce.printErrorReport();
             throw new CRUDException("Problem with JSON DB");
         }
+        return true;
     }
 
-    public void createProduct(Product product) throws CRUDException {
+    @Override
+    public boolean createProduct(Product product) throws CRUDException {
+        if (product==null) throw new CRUDException("product is null");
         checkDB();
         try {
             db.CreateObject("Products", "" + product.getId());
             db.put("Products." + product.getId(), "id", ""+product.getId());
             db.put("Products." + product.getId(), "vendorCode", product.getVendorCode());
             db.put("Products." + product.getId(), "supplyPrice", ""+product.getSupplyPrice());
+            db.put("Products." + product.getId(), "office", product.getOffice());
         } catch (ClusterException ce) {
             ce.printErrorReport();
             throw new CRUDException("Problem with JSON DB");
         }
+        return true;
     }
 
-    public void deleteClient(int clientId) throws CRUDException {
+    @Override
+    public boolean deleteClient(int clientId) throws CRUDException {
         checkDB();
         if (db.Exists("Clients." + clientId)) {
             try {
@@ -100,9 +138,27 @@ public class jsonSales implements salesCRUD {
                 throw new CRUDException("Problem with JSON DB");
             }
         } else throw new CRUDException("Unknown object");
+        return true;
     }
 
-    public void deleteManager(int managerId) throws CRUDException {
+    @Override
+    public int countClient() throws CRUDException {
+        checkDB();
+        try {
+            return db.size("Clients");
+        } catch (ClusterException ce) {
+            ce.printStackTrace();
+            throw new CRUDException("Problem with JSON DB");
+        }
+    }
+
+    @Override
+    public int nextIdClient() throws CRUDException {
+        return -1;
+    }
+
+    @Override
+    public boolean deleteManager(int managerId) throws CRUDException {
         checkDB();
         if (db.Exists("Managers." + managerId)) {
             try {
@@ -112,9 +168,27 @@ public class jsonSales implements salesCRUD {
                 throw new CRUDException("Problem with JSON DB");
             }
         } else throw new CRUDException("Unknown object");
+        return true;
     }
 
-    public void deleteOrder(int orderId) throws CRUDException {
+    @Override
+    public int countManager() throws CRUDException {
+        checkDB();
+        try {
+            return db.size("Managers");
+        } catch (ClusterException ce) {
+            ce.printStackTrace();
+            throw new CRUDException("Problem with JSON DB");
+        }
+    }
+
+    @Override
+    public int nextIdManager() throws CRUDException {
+        return -1;
+    }
+
+    @Override
+    public boolean deleteOrder(int orderId) throws CRUDException {
         checkDB();
         if (db.Exists("Orders." + orderId)) {
             try {
@@ -124,9 +198,27 @@ public class jsonSales implements salesCRUD {
                 throw new CRUDException("Problem with JSON DB");
             }
         } else throw new CRUDException("Unknown object");
+        return true;
     }
 
-    public void deleteProduct(int productId) throws CRUDException {
+    @Override
+    public int countOrder() throws CRUDException {
+        checkDB();
+        try {
+            return db.size("Orders");
+        } catch (ClusterException ce) {
+            ce.printStackTrace();
+            throw new CRUDException("Problem with JSON DB");
+        }
+    }
+
+    @Override
+    public int nextIdOrder() throws CRUDException {
+        return -1;
+    }
+
+    @Override
+    public boolean deleteProduct(int productId) throws CRUDException {
         checkDB();
         if (db.Exists("Products." + productId)) {
             try {
@@ -136,13 +228,34 @@ public class jsonSales implements salesCRUD {
                 throw new CRUDException("Problem with JSON DB");
             }
         } else throw new CRUDException("Unknown object");
+        return true;
     }
 
-    public Client getClient(int clientId) throws CRUDException {
+    @Override
+    public int countProduct() throws CRUDException {
+        checkDB();
+        try {
+            return db.size("Products");
+        } catch (ClusterException ce) {
+            ce.printStackTrace();
+            throw new CRUDException("Problem with JSON DB");
+        }
+    }
+
+    @Override
+    public int nextIdProduct() throws CRUDException {
+        return -1;
+    }
+
+    @Override
+    public Client readClient(int clientId) throws CRUDException {
         checkDB();
         if (db.Exists("Clients." + clientId)) {
             try {
-                Client client = new Client(Integer.parseInt(db.get("Clients." + clientId + ".id")), db.get("Clients." + clientId + ".FIO"));
+                Client client = new Client(
+                                    Integer.parseInt(db.get("Clients." + clientId + ".id")),
+                                    db.get("Clients." + clientId + ".FIO"),
+                                    db.get("Clients." + clientId + ".office"));
                 return client;
             } catch (ClusterException ce){
                 ce.printErrorReport();
@@ -151,13 +264,15 @@ public class jsonSales implements salesCRUD {
         } else throw new CRUDException("Unknown object");
     }
 
-    public Manager getManager(int managerId) throws CRUDException {
+    @Override
+    public Manager readManager(int managerId) throws CRUDException {
         checkDB();
         if (db.Exists("Managers." + managerId)) {
             try {
                 Manager manager = new Manager(
                                     Integer.parseInt(db.get("Managers." + managerId + ".id")),
-                                    db.get("Managers." + managerId + ".FIO"));
+                                    db.get("Managers." + managerId + ".FIO"),
+                                    db.get("Managers." + managerId + ".office"));
                 return manager;
             } catch (ClusterException ce){
                 ce.printErrorReport();
@@ -166,15 +281,16 @@ public class jsonSales implements salesCRUD {
         } else throw new CRUDException("Unknown object");
     }
 
-    public Order getOrder(int orderId) throws CRUDException {
+    @Override
+    public Order readOrder(int orderId) throws CRUDException {
         checkDB();
         if (db.Exists("Orders." + orderId)) {
             try {
                 Order order = new Order(
                                 Integer.parseInt(db.get("Orders." + orderId + ".id")),
                                 Integer.parseInt(db.get("Orders." + orderId + ".managerId")),
-                                new Date()//parse date
-                );
+                                db.get("Orders." + orderId + ".date"),
+                                db.get("Orders." + orderId + ".office"));
                 return order;
             } catch (ClusterException ce){
                 ce.printErrorReport();
@@ -183,15 +299,16 @@ public class jsonSales implements salesCRUD {
         } else throw new CRUDException("Unknown object");
     }
 
-    public Product getProduct(int productId) throws CRUDException {
+    @Override
+    public Product readProduct(int productId) throws CRUDException {
         checkDB();
         if (db.Exists("Products." + productId)) {
             try {
                 Product product = new Product(
                                     Integer.parseInt(db.get("Products." + productId + ".id")),
                                     Long.parseLong(db.get("Products." + productId + ".supplyPrice")),
-                                    db.get("Products." + productId + ".vendorCode")
-                        );
+                                    db.get("Products." + productId + ".vendorCode"),
+                                    db.get("Products." + productId + ".office"));
                 return product;
             } catch (ClusterException ce){
                 ce.printErrorReport();
@@ -200,19 +317,22 @@ public class jsonSales implements salesCRUD {
         } else throw new CRUDException("Unknown object");
     }
 
-    public void updateClient(int clientId, Client client) throws CRUDException {
-
+    @Override
+    public boolean updateClient(int clientId, Client client) throws CRUDException {
+        return false;//лень писать пока
+    }
+    @Override
+    public boolean updateManager(int managerId, Manager manager) throws CRUDException {
+        return false;//лень писать пока
     }
 
-    public void updateManager(int managerId, Manager manager) throws CRUDException {
-
+    @Override
+    public boolean updateOrder(int orderId, Order order) throws CRUDException {
+        return false;//лень писать пока
     }
 
-    public void updateOrder(int orderId, Order order) throws CRUDException {
-
-    }
-
-    public void updateProduct(int productId, Product product) throws CRUDException {
-
+    @Override
+    public boolean updateProduct(int productId, Product product) throws CRUDException {
+        return false;//лень писать пока
     }
 }
