@@ -1,56 +1,76 @@
 package com.rzd.pktb.ProdOrders.business;
 
-import com.rzd.pktb.ProdOrders.crud.CRUDException;
+import com.rzd.pktb.JSONCluster.ClusterException;
+import com.rzd.pktb.JSONCluster.ClusterOne;
 import com.rzd.pktb.ProdOrders.crud.salesCRUD;
-import com.rzd.pktb.ProdOrders.entity.*;
+import com.rzd.pktb.ProdOrders.crud.slowCRUD;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by SimpleUser on 08.06.2016.
  */
 public class SalesProcess {
-    public salesCRUD db;
+    public HashMap<String, salesCRUD> ds;
+    public HashMap<String, String> officeDs;
 
-    public SalesProcess(salesCRUD dataSource){
-        this.db = dataSource;
+    public SalesProcess(String settingsFile){
+        ClusterOne sets = new ClusterOne();
+        ds = new HashMap<>();
+        officeDs = new HashMap<>();
+        try {
+            sets.GetFromFile(settingsFile);
+            int dsc = sets.size("dataSources");
+            for (int dsi=0;dsi<dsc;dsi++){
+                String name = sets.get("dataSources." + dsi + ".name");
+                String Cname = sets.get("dataSources." + dsi + ".type");
+                int minL = Integer.parseInt(sets.get("dataSources." + dsi + ".minLat"));
+                int maxL = Integer.parseInt(sets.get("dataSources." + dsi + ".maxLat"));
+                ds.put(name, new slowCRUD(Cname, minL, maxL));
+                int ofc = sets.size("dataSources." + dsi + ".offices");
+                for (int ofi=0;ofi<ofc;ofi++){
+                    String office = sets.get("dataSources." + dsi + ".offices." + ofi);
+                    officeDs.put(office, name);
+                }
+            }
+        } catch (ClusterException e) {
+            System.out.println("Invalid settings file");
+        }
     }
 
-    public String startProcess(){
-        /*try {
-
-            db.createClient(new Client(0, "Иванов Иван Иваныч"));
-            db.createClient(new Client(1, "Петров Петр Петрович"));
-
-            db.createManager(new Manager(0, "Толкаев Продаван Втюхович"));
-
-            db.createProduct(new Product(0, 50000, "Gibson SG Special"));
-            db.createProduct(new Product(1, 90000, "Gibson Les Paul Standart"));
-            db.createProduct(new Product(2, 70000, "Gibson Explorer"));
-            db.createProduct(new Product(3, 60000, "Fender American Standart Stratocaster"));
-            db.createProduct(new Product(4, 80000, "Fender Telecaster"));
-
-            Order order = new Order(0, 0, new Date());
-            order.addItem(new OrderItem(0,2,1000000));
-            order.addItem(new OrderItem(3,4,2000000));
-            db.createOrder(order);
-
-            StringBuffer checkObjects = new StringBuffer();
-
-            checkObjects.append(db.getClient(1).getInfo());
-
-            checkObjects.append(db.getManager(0).getInfo());
-            checkObjects.append(db.getManager(0).getInfo());
-
-            checkObjects.append(db.getProduct(2).getInfo());
-
-            checkObjects.append(db.getOrder(0).getInfo());
-
-            return checkObjects.toString();
-        } catch (CRUDException e) {
-            e.printStackTrace();
-            return "Something wrong";
+    public String startProcess(List<String> messages){
+//        System.out.println(messages.size() + "<-- size");
+/*
+        Iterator<String> keys =  ds.keySet().iterator();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            System.out.println(key + ":" + ds.get(key).getClass().getName());
         }
-     */return "";
+        keys =  officeDs.keySet().iterator();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            System.out.println(key + ":" + officeDs.get(key));
+        }
+*/
+
+
+        for (String msg : messages){
+//            System.out.println("for call");
+            ClusterOne message = new ClusterOne();
+            try {
+                message.GetFromString(msg);
+                //ТУТ ДОЛЖНА БЫТЬ МНОГОПОТОЧНОСТЬ
+                String cmd = message.get("cmd");
+                String office = message.get("office");
+                if (!officeDs.containsKey(office)) continue;
+                String result = cmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message.getPart("data"), office);
+                System.out.println(result);
+            } catch (ClusterException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
     }
 }

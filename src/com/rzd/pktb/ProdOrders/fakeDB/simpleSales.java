@@ -10,6 +10,10 @@ import java.util.Date;
  * Created by SimpleUser on 08.06.2016.
  */
 public class simpleSales implements salesCRUD {
+    public simpleSales(){
+
+    }
+
     @Override
     public boolean createClient(Client client) throws CRUDException {
         if (client==null) throw new CRUDException("client is null");

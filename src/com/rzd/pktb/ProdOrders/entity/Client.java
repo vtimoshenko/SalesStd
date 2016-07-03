@@ -4,8 +4,11 @@ package com.rzd.pktb.ProdOrders.entity;
  * Created by SimpleUser on 08.06.2016.
  */
 public class Client {
+    @Field
     private int id;
+    @Field
     private String FIO;
+    @Field
     private String office;
 
     public Client(int id, String FIO, String office) {

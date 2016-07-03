@@ -15,9 +15,12 @@ public class jsonSales implements salesCRUD {
     private ClusterOne db;
     private String fileName;
 
+    public jsonSales(){
+        this.fileName = "JsonDB.txt";
+    }
+
     public jsonSales(String fname) {
         this.fileName = fname;
-        load();
     }
 
     private void load(){
@@ -39,10 +42,10 @@ public class jsonSales implements salesCRUD {
         if (db==null) {
             db = new ClusterOne();
             try {
-                db.CreateArray("", "Clients");
-                db.CreateArray("", "Managers");
-                db.CreateArray("", "Orders");
-                db.CreateArray("", "Products");
+                db.CreateObject("", "Clients");
+                db.CreateObject("", "Managers");
+                db.CreateObject("", "Orders");
+                db.CreateObject("", "Products");
             } catch (ClusterException ce) {
                 ce.printErrorReport();
                 throw new CRUDException("Problem with JSON DB");
