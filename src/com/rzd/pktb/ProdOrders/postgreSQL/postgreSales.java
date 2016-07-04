@@ -3,7 +3,7 @@ package com.rzd.pktb.ProdOrders.postgreSQL;
 import com.rzd.pktb.ProdOrders.DB.DBException;
 import com.rzd.pktb.ProdOrders.DB.DBInterface;
 import com.rzd.pktb.ProdOrders.crud.CRUDException;
-import com.rzd.pktb.ProdOrders.crud.salesCRUD;
+import com.rzd.pktb.ProdOrders.crud.SalesCRUD;
 import com.rzd.pktb.ProdOrders.entity.Client;
 import com.rzd.pktb.ProdOrders.entity.Manager;
 import com.rzd.pktb.ProdOrders.entity.Order;
@@ -12,10 +12,10 @@ import com.rzd.pktb.ProdOrders.entity.Product;
 /**
  * Created by vtimoshenko on 04.07.2016.
  */
-public class postgreSales implements salesCRUD {
+public class PostgreSales implements SalesCRUD {
     DBInterface db;
 
-    public postgreSales() {
+    public PostgreSales() {
         try {
             db = new DBInterface("org.postgresql.Driver","jdbc:postgresql://localhost:5432/SalesStd","postgres","fishing");
         } catch (DBException e) {

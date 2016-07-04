@@ -1,16 +1,14 @@
 package com.rzd.pktb.ProdOrders.fakeDB;
 
 import com.rzd.pktb.ProdOrders.crud.CRUDException;
-import com.rzd.pktb.ProdOrders.crud.salesCRUD;
+import com.rzd.pktb.ProdOrders.crud.SalesCRUD;
 import com.rzd.pktb.ProdOrders.entity.*;
-
-import java.util.Date;
 
 /**
  * Created by SimpleUser on 08.06.2016.
  */
-public class simpleSales implements salesCRUD {
-    public simpleSales(){
+public class SimpleSales implements SalesCRUD {
+    public SimpleSales(){
 
     }
 

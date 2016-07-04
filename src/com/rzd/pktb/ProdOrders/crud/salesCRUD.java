@@ -8,7 +8,7 @@ import com.rzd.pktb.ProdOrders.entity.Product;
 /**
  * Created by SimpleUser on 08.06.2016.
  */
-public interface salesCRUD {
+public interface SalesCRUD {
 
     boolean createClient(Client client) throws CRUDException;
     Client  readClient(int clientId) throws CRUDException;

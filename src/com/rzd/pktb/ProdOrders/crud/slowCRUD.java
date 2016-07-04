@@ -1,7 +1,5 @@
 package com.rzd.pktb.ProdOrders.crud;
 
-import com.rzd.pktb.ProdOrders.crud.CRUDException;
-import com.rzd.pktb.ProdOrders.crud.salesCRUD;
 import com.rzd.pktb.ProdOrders.entity.Client;
 import com.rzd.pktb.ProdOrders.entity.Manager;
 import com.rzd.pktb.ProdOrders.entity.Order;
@@ -12,8 +10,8 @@ import java.util.Random;
 /**
  * Created by SimpleUser on 01.07.2016.
  */
-public class slowCRUD implements salesCRUD {
-    private salesCRUD sales;
+public class SlowCRUD implements SalesCRUD {
+    private SalesCRUD sales;
     private int minLatency;
     private int maxLatency;
 
@@ -28,12 +26,12 @@ public class slowCRUD implements salesCRUD {
         }
     }
 
-    public slowCRUD(String crudClass, int minL, int maxL){
+    public SlowCRUD(String crudClass, int minL, int maxL){
         minLatency = minL;
         maxLatency = maxL;
         rand = new Random();
         try {
-            sales = (salesCRUD)Class.forName(crudClass).newInstance();
+            sales = (SalesCRUD)Class.forName(crudClass).newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

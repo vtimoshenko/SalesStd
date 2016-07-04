@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by SimpleUser on 01.07.2016.
  */
-public class startPoint {
+public class StartPoint {
     public static void main(String[] args) {
         SalesProcess sp = new SalesProcess("Settings.txt");
         List<String> sList;

@@ -44,7 +44,7 @@ public class ClusterOne
 	public		boolean			put (String trace, String key, JSONObject data)
 	throws ClusterException	
 	{
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -72,7 +72,7 @@ public class ClusterOne
 	public		boolean			put (String trace, String key, JSONArray data)
 	throws ClusterException
 	{
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -101,7 +101,7 @@ public class ClusterOne
 	throws ClusterException
 	{
 		if (data==null) data = "";
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -129,7 +129,7 @@ public class ClusterOne
 	public		boolean			put (String trace, JSONObject data)
 	throws ClusterException
 	{
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -157,7 +157,7 @@ public class ClusterOne
 	public		boolean			put (String trace, JSONArray data)
 	throws ClusterException
 	{
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -186,7 +186,7 @@ public class ClusterOne
 	throws ClusterException
 	{
 		if (data==null) data = "";
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -215,11 +215,11 @@ public class ClusterOne
 	 * @return		статус
 	 * @throws ClusterException
 	 */
-	public		boolean			CreateArray (String trace, String key)
+	public		boolean 		createArray(String trace, String key)
 	throws ClusterException
 	{
 		JSONArray nobj = new JSONArray();
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -243,11 +243,11 @@ public class ClusterOne
 	 * @return		статус
 	 * @throws ClusterException
 	 */
-	public		boolean			CreateObject (String trace, String key)
+	public		boolean 		createObject(String trace, String key)
 	throws ClusterException
 	{
 		JSONObject nobj = new JSONObject();
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -271,11 +271,11 @@ public class ClusterOne
 	 * @return
 	 * @throws ClusterException
 	 */
-	public		boolean			CreateArray (String trace)
+	public		boolean 		createArray(String trace)
 	throws ClusterException
 	{
 		JSONArray nobj = new JSONArray();
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -299,11 +299,11 @@ public class ClusterOne
 	 * @return
 	 * @throws ClusterException
 	 */
-	public		boolean			CreateObject (String trace)
+	public		boolean 		createObject(String trace)
 	throws ClusterException
 	{
 		JSONObject nobj = new JSONObject();
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -339,7 +339,7 @@ public class ClusterOne
 		
 		if (part==null) return ret;
 		
-		ret.GetFromString(part);
+		ret.getFromString(part);
 		return ret;
 	}
 	/**
@@ -354,18 +354,18 @@ public class ClusterOne
 	public		boolean			putPart (String trace, String key, ClusterOne part)
 	throws ClusterException
 	{
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return false;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
 			JSONObject c = (JSONObject) current;
-			c.put(key, part.Trace(""));
+			c.put(key, part.trace(""));
 			return true;
 		}
 		else if (current.getClass().getSimpleName().equals("JSONArray"))
 		{
 			JSONArray c = (JSONArray) current;
-			c.add(part.Trace(""));
+			c.add(part.trace(""));
 			return true;
 		}
 		else return false;
@@ -387,7 +387,7 @@ public class ClusterOne
 	public		String			search (String trace, String option, String value)
 	throws ClusterException
 	{
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) 
 		{	
 			return null;
@@ -435,7 +435,7 @@ public class ClusterOne
 	public		boolean			createIndex (String sourceTrace, String sourceIndex, String destinationTrace, String name)
 	throws ClusterException
 	{
-		Object source = Trace(sourceTrace);//узнать что за массив
+		Object source = trace(sourceTrace);//узнать что за массив
 		if (source==null) { return false; }
 		
 		JSONObject nobj = new JSONObject();//новый массив
@@ -447,13 +447,13 @@ public class ClusterOne
 			Object[] objs = c.keySet().toArray();//ключи текущего объекта
 			for (int i=0;i<objs.length;i++)//перебор ключей текущего объекта
 			{
-				Object okey = Trace(sourceTrace + "." + objs[i].toString() + "." + sourceIndex);
+				Object okey = trace(sourceTrace + "." + objs[i].toString() + "." + sourceIndex);
 				if (!okey.getClass().getSimpleName().equals("String")) return false;
 				String key = okey.toString();
 				//узнали индексный ключ
 				
 				//теперь создать копию по адресу
-				Object current = Trace(sourceTrace + "." + objs[i].toString());
+				Object current = trace(sourceTrace + "." + objs[i].toString());
 				nobj.put(key, current);
 			}
 		}
@@ -463,13 +463,13 @@ public class ClusterOne
 			
 			for (int i=0;i<c.size();i++)
 			{
-				Object okey = Trace(sourceTrace + "." + i + "." + sourceIndex);
+				Object okey = trace(sourceTrace + "." + i + "." + sourceIndex);
 				if (!okey.getClass().getSimpleName().equals("String")) return false;
 				String key = okey.toString();
 				//узнали индексный ключ
 				
 				//теперь создать копию по адресу
-				Object current = Trace(sourceTrace + "." + i);
+				Object current = trace(sourceTrace + "." + i);
 				nobj.put(key, current);
 			}
 		}
@@ -487,7 +487,7 @@ public class ClusterOne
 	public		void 			empty (String trace)
 	throws ClusterException
 	{
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -514,7 +514,7 @@ public class ClusterOne
 	public 		void 			delete (String trace, String key)
 	throws ClusterException
 	{
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -544,7 +544,7 @@ public class ClusterOne
 		
 		String key = trace.substring(dotindex+1, trace.length());
 		trace = trace.substring(dotindex, trace.length());
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -571,7 +571,7 @@ public class ClusterOne
 	public		int				size (String trace)
 	throws ClusterException
 	{
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current==null) return 0;
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
@@ -600,7 +600,7 @@ public class ClusterOne
 	public		String			get (String trace)
 	throws ClusterException
 	{
-		Object current = Trace(trace);
+		Object current = trace(trace);
 		if (current.getClass().getSimpleName().equals("JSONObject"))
 		{
 			JSONObject c = (JSONObject) current;
@@ -628,7 +628,7 @@ public class ClusterOne
 	 * 
 	 * @return	строка JSON
 	 */
-	public		String			GetJSON ()
+	public		String 			getJSON()
 	{
 		return root.toJSONString();
 	}
@@ -637,7 +637,7 @@ public class ClusterOne
 	 * 
 	 * @return
 	 */
-	public		JSONObject		GetJSONObject ()
+	public		JSONObject 		getJSONObject()
 	{
 		return root;
 	}
@@ -648,7 +648,7 @@ public class ClusterOne
 	 * @return		статус
 	 * @throws ClusterException
 	 */
-	public		boolean			GetFromFile (String fname)
+	public		boolean 		getFromFile(String fname)
 	throws ClusterException
 	{
 		try
@@ -666,7 +666,7 @@ public class ClusterOne
 			line = line.replaceAll("//.*\r\n", "\r\n");
 			//System.out.println("after:" + line);
 			//System.out.println("READING: " + allData);
-			return GetFromString (line);
+			return getFromString(line);
 		}
 		catch (Exception e)
 		{
@@ -682,7 +682,7 @@ public class ClusterOne
 	 * @return			статус
 	 * @throws ClusterException
 	 */
-	public		boolean			GetFromString (String target)
+	public		boolean 		getFromString(String target)
 	throws ClusterException
 	{
 		try
@@ -704,7 +704,7 @@ public class ClusterOne
 	 * @return		статус
 	 * @throws ClusterException
 	 */
-	public		boolean			GetFromRS (ResultSet rs)
+	public		boolean 		getFromRS(ResultSet rs)
 	throws ClusterException
 	{
 		LinkedList<String> Colnames = new LinkedList<String>();			//Набор имён столбцов
@@ -742,7 +742,7 @@ public class ClusterOne
 	 * @return		Статус
 	 * @throws ClusterException
 	 */
-	public		boolean			SetToFile (String fname)
+	public		boolean 		setToFile(String fname)
 	throws ClusterException
 	{
 		try
@@ -770,7 +770,7 @@ public class ClusterOne
 	 * @return		Объект листа или ветви
 	 * @throws ClusterException
 	 */
-	public		Object			Trace(String trace)
+	public		Object 			trace(String trace)
 	throws ClusterException
 	{
 		try
@@ -806,7 +806,7 @@ public class ClusterOne
 	 * @param trace путь
 	 * @return
 	 */
-	public		boolean			Exists(String trace)
+	public		boolean 		exists(String trace)
 	{
 		try
 		{
@@ -869,7 +869,7 @@ public class ClusterOne
 	throws ClusterException
 	{
 		root = new JSONObject();
-		this.GetFromFile(fname);
+		this.getFromFile(fname);
 	}
 	/**
 	 * Конструктор с данными

@@ -210,7 +210,7 @@ public class DBInterface
 			Statement sm = con.createStatement();
 			ClusterOne result = new ClusterOne();
 			ResultSet rs = sm.executeQuery(select/* + " with ur"*/);
-			result.GetFromRS(rs);
+			result.getFromRS(rs);
 			rs.close();
 			sm.close();
 			con.close();

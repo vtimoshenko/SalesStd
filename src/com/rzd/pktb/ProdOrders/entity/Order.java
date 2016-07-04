@@ -8,9 +8,7 @@ import java.util.List;
  * Created by SimpleUser on 08.06.2016.
  */
 public class Order {
-    @Field
     private int id;
-    @Field
     private int managerId;
     private String date;
     private List<OrderItem> items;

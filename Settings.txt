@@ -2,28 +2,28 @@
     "dataSources" : [
         {
             "name" : "Test",
-            "type" : "com.rzd.pktb.ProdOrders.fakeDB.simpleSales",
+            "type" : "com.rzd.pktb.ProdOrders.fakeDB.SimpleSales",
             "offices" : ["Test"],
             "minLat" : "100",
             "maxLat" : "500"
         },
         {
             "name" : "MoscowJ",
-            "type" : "com.rzd.pktb.ProdOrders.jsonDB.jsonSales",
+            "type" : "com.rzd.pktb.ProdOrders.jsonDB.JsonSales",
             "offices" : ["Moscow 1", "Moscow 2", "M.region south"],
             "minLat" : "400",
             "maxLat" : "2000"
         },
         {
             "name" : "Vladivostok",
-            "type" : "com.rzd.pktb.ProdOrders.jsonDB.jsonSales",
+            "type" : "com.rzd.pktb.ProdOrders.jsonDB.JsonSales",
             "offices" : ["Vladivostok 1", "East region"],
             "minLat" : "1000",
             "maxLat" : "8000"
         },
         {
             "name" : "DBCOD",
-            "type" : "com.rzd.pktb.ProdOrders.postgreSQL.postgreSales",
+            "type" : "com.rzd.pktb.ProdOrders.postgreSQL.PostgreSales",
             "offices" : ["DB1"],
             "minLat" : "1000",
             "maxLat" : "5000"

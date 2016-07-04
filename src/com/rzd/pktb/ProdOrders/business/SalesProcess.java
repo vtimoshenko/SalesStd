@@ -2,8 +2,8 @@ package com.rzd.pktb.ProdOrders.business;
 
 import com.rzd.pktb.JSONCluster.ClusterException;
 import com.rzd.pktb.JSONCluster.ClusterOne;
-import com.rzd.pktb.ProdOrders.crud.salesCRUD;
-import com.rzd.pktb.ProdOrders.crud.slowCRUD;
+import com.rzd.pktb.ProdOrders.crud.SalesCRUD;
+import com.rzd.pktb.ProdOrders.crud.SlowCRUD;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -12,7 +12,7 @@ import java.util.concurrent.*;
  * Created by SimpleUser on 08.06.2016.
  */
 public class SalesProcess {
-    public HashMap<String, salesCRUD> ds;
+    public HashMap<String, SalesCRUD> ds;
     public HashMap<String, String> officeDs;
 
     public SalesProcess(String settingsFile){
@@ -20,14 +20,14 @@ public class SalesProcess {
         ds = new HashMap<>();
         officeDs = new HashMap<>();
         try {
-            sets.GetFromFile(settingsFile);
+            sets.getFromFile(settingsFile);
             int dsc = sets.size("dataSources");
             for (int dsi=0;dsi<dsc;dsi++){
                 String name = sets.get("dataSources." + dsi + ".name");
                 String Cname = sets.get("dataSources." + dsi + ".type");
                 int minL = Integer.parseInt(sets.get("dataSources." + dsi + ".minLat"));
                 int maxL = Integer.parseInt(sets.get("dataSources." + dsi + ".maxLat"));
-                ds.put(name, new slowCRUD(Cname, minL, maxL));
+                ds.put(name, new SlowCRUD(Cname, minL, maxL));
                 int ofc = sets.size("dataSources." + dsi + ".offices");
                 for (int ofi=0;ofi<ofc;ofi++){
                     String office = sets.get("dataSources." + dsi + ".offices." + ofi);
@@ -46,14 +46,14 @@ public class SalesProcess {
         for (String msg : messages){
             ClusterOne message = new ClusterOne();
             try {
-                message.GetFromString(msg);
+                message.getFromString(msg);
                 //МНОГОПОТОЧНОСТЬ
                 String cmd = message.get("cmd");
                 String office = message.get("office");
                 if (!officeDs.containsKey(office)) continue;
                 results.add( service.submit(new Callable() {
                     public String call() throws ClusterException {
-                        return cmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message/*.getPart("data")*/);
+                        return CmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message/*.getPart("data")*/);
                     }
                 }) );
             } catch (ClusterException e) {
@@ -97,11 +97,11 @@ public class SalesProcess {
         for (String msg : messages){
             ClusterOne message = new ClusterOne();
             try {
-                message.GetFromString(msg);
+                message.getFromString(msg);
                 String cmd = message.get("cmd");
                 String office = message.get("office");
                 if (!officeDs.containsKey(office)) continue;
-                System.out.println(cmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message/*.getPart("data")*/));
+                System.out.println(CmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message/*.getPart("data")*/));
             } catch (ClusterException e) {
                 e.printStackTrace();
             }

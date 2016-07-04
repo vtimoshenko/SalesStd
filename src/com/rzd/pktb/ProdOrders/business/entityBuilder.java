@@ -9,7 +9,7 @@ import com.rzd.pktb.ProdOrders.entity.Product;
 /**
  * Created by SimpleUser on 02.07.2016.
  */
-public class entityBuilder {
+public class EntityBuilder {
 
     public static Client createClient(ClusterOne data, String office){
         try {

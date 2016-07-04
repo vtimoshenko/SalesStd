@@ -3,36 +3,34 @@ package com.rzd.pktb.ProdOrders.jsonDB;
 import com.rzd.pktb.JSONCluster.ClusterException;
 import com.rzd.pktb.JSONCluster.ClusterOne;
 import com.rzd.pktb.ProdOrders.crud.CRUDException;
-import com.rzd.pktb.ProdOrders.crud.salesCRUD;
+import com.rzd.pktb.ProdOrders.crud.SalesCRUD;
 import com.rzd.pktb.ProdOrders.entity.*;
-
-import java.util.Date;
 
 /**
  * Created by vtimoshenko on 09.06.2016.
  */
-public class jsonSales implements salesCRUD {
+public class JsonSales implements SalesCRUD {
     private ClusterOne db;
     private String fileName;
 
-    public jsonSales(){
+    public JsonSales(){
         this.fileName = "JsonDB.txt";
     }
 
-    public jsonSales(String fname) {
+    public JsonSales(String fname) {
         this.fileName = fname;
     }
 
     private void load(){
         try {
-            db.GetFromFile(this.fileName);
+            db.getFromFile(this.fileName);
         } catch (ClusterException e) {
             e.printStackTrace();
         }
     }
     private void save(){
         try {
-            db.SetToFile(this.fileName);
+            db.setToFile(this.fileName);
         } catch (ClusterException e) {
             e.printStackTrace();
         }
@@ -42,10 +40,10 @@ public class jsonSales implements salesCRUD {
         if (db==null) {
             db = new ClusterOne();
             try {
-                db.CreateObject("", "Clients");
-                db.CreateObject("", "Managers");
-                db.CreateObject("", "Orders");
-                db.CreateObject("", "Products");
+                db.createObject("", "Clients");
+                db.createObject("", "Managers");
+                db.createObject("", "Orders");
+                db.createObject("", "Products");
             } catch (ClusterException ce) {
                 ce.printErrorReport();
                 throw new CRUDException("Problem with JSON DB");
@@ -61,7 +59,7 @@ public class jsonSales implements salesCRUD {
         if (client==null) throw new CRUDException("client is null");
         checkDB();
         try {
-            db.CreateObject("Clients", "" + client.getId());
+            db.createObject("Clients", "" + client.getId());
             db.put("Clients." + client.getId(), "id", ""+client.getId());
             db.put("Clients." + client.getId(), "FIO", client.getFIO());
             db.put("Clients." + client.getId(), "office", client.getOffice());
@@ -77,7 +75,7 @@ public class jsonSales implements salesCRUD {
         if (manager==null) throw new CRUDException("manager is null");
         checkDB();
         try {
-            db.CreateObject("Managers", "" + manager.getId());
+            db.createObject("Managers", "" + manager.getId());
             db.put("Managers." + manager.getId(), "id", ""+manager.getId());
             db.put("Managers." + manager.getId(), "FIO", manager.getFIO());
             db.put("Managers." + manager.getId(), "office", manager.getOffice());
@@ -93,15 +91,15 @@ public class jsonSales implements salesCRUD {
         if (order==null) throw new CRUDException("order is null");
         checkDB();
         try {
-            db.CreateObject("Orders", "" + order.getId());
+            db.createObject("Orders", "" + order.getId());
             db.put("Orders." + order.getId(), "id", ""+order.getId());
             db.put("Orders." + order.getId(), "date", order.getDate());
             db.put("Orders." + order.getId(), "managerId", ""+order.getManagerId());
             db.put("Orders." + order.getId(), "office", order.getOffice());
-            db.CreateArray("Orders." + order.getId(),"Items");
+            db.createArray("Orders." + order.getId(),"Items");
             for (OrderItem item : order.getItems())
             {
-                db.CreateObject("Orders." + order.getId() + ".Items", ""+item.getProductId());
+                db.createObject("Orders." + order.getId() + ".Items", ""+item.getProductId());
                 db.put("Orders." + order.getId() + ".Items." + item.getProductId(),"productId", ""+item.getProductId());
                 db.put("Orders." + order.getId() + ".Items." + item.getProductId(),"count", ""+item.getCount());
                 db.put("Orders." + order.getId() + ".Items." + item.getProductId(),"price", ""+item.getPrice());
@@ -118,7 +116,7 @@ public class jsonSales implements salesCRUD {
         if (product==null) throw new CRUDException("product is null");
         checkDB();
         try {
-            db.CreateObject("Products", "" + product.getId());
+            db.createObject("Products", "" + product.getId());
             db.put("Products." + product.getId(), "id", ""+product.getId());
             db.put("Products." + product.getId(), "vendorCode", product.getVendorCode());
             db.put("Products." + product.getId(), "supplyPrice", ""+product.getSupplyPrice());
@@ -133,7 +131,7 @@ public class jsonSales implements salesCRUD {
     @Override
     public boolean deleteClient(int clientId) throws CRUDException {
         checkDB();
-        if (db.Exists("Clients." + clientId)) {
+        if (db.exists("Clients." + clientId)) {
             try {
                 db.delete("Clients." + clientId);
             } catch (ClusterException ce){
@@ -163,7 +161,7 @@ public class jsonSales implements salesCRUD {
     @Override
     public boolean deleteManager(int managerId) throws CRUDException {
         checkDB();
-        if (db.Exists("Managers." + managerId)) {
+        if (db.exists("Managers." + managerId)) {
             try {
                 db.delete("Managers." + managerId);
             } catch (ClusterException ce){
@@ -193,7 +191,7 @@ public class jsonSales implements salesCRUD {
     @Override
     public boolean deleteOrder(int orderId) throws CRUDException {
         checkDB();
-        if (db.Exists("Orders." + orderId)) {
+        if (db.exists("Orders." + orderId)) {
             try {
                 db.delete("Orders." + orderId);
             } catch (ClusterException ce){
@@ -223,7 +221,7 @@ public class jsonSales implements salesCRUD {
     @Override
     public boolean deleteProduct(int productId) throws CRUDException {
         checkDB();
-        if (db.Exists("Products." + productId)) {
+        if (db.exists("Products." + productId)) {
             try {
                 db.delete("Products." + productId);
             } catch (ClusterException ce){
@@ -253,7 +251,7 @@ public class jsonSales implements salesCRUD {
     @Override
     public Client readClient(int clientId) throws CRUDException {
         checkDB();
-        if (db.Exists("Clients." + clientId)) {
+        if (db.exists("Clients." + clientId)) {
             try {
                 Client client = new Client(
                                     Integer.parseInt(db.get("Clients." + clientId + ".id")),
@@ -270,7 +268,7 @@ public class jsonSales implements salesCRUD {
     @Override
     public Manager readManager(int managerId) throws CRUDException {
         checkDB();
-        if (db.Exists("Managers." + managerId)) {
+        if (db.exists("Managers." + managerId)) {
             try {
                 Manager manager = new Manager(
                                     Integer.parseInt(db.get("Managers." + managerId + ".id")),
@@ -287,7 +285,7 @@ public class jsonSales implements salesCRUD {
     @Override
     public Order readOrder(int orderId) throws CRUDException {
         checkDB();
-        if (db.Exists("Orders." + orderId)) {
+        if (db.exists("Orders." + orderId)) {
             try {
                 Order order = new Order(
                                 Integer.parseInt(db.get("Orders." + orderId + ".id")),
@@ -305,7 +303,7 @@ public class jsonSales implements salesCRUD {
     @Override
     public Product readProduct(int productId) throws CRUDException {
         checkDB();
-        if (db.Exists("Products." + productId)) {
+        if (db.exists("Products." + productId)) {
             try {
                 Product product = new Product(
                                     Integer.parseInt(db.get("Products." + productId + ".id")),

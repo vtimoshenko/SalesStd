@@ -3,21 +3,20 @@ package com.rzd.pktb.ProdOrders.business;
 import com.rzd.pktb.JSONCluster.ClusterException;
 import com.rzd.pktb.JSONCluster.ClusterOne;
 import com.rzd.pktb.ProdOrders.crud.CRUDException;
-import com.rzd.pktb.ProdOrders.crud.salesCRUD;
+import com.rzd.pktb.ProdOrders.crud.SalesCRUD;
 import com.rzd.pktb.ProdOrders.entity.Client;
 import com.rzd.pktb.ProdOrders.entity.Manager;
 import com.rzd.pktb.ProdOrders.entity.Product;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
  * Created by SimpleUser on 02.07.2016.
  */
-public class cmdExecutor{
+public class CmdExecutor {
 
-    public static String cmdExec(String cmd, salesCRUD db, ClusterOne data){
+    public static String cmdExec(String cmd, SalesCRUD db, ClusterOne data){
         try {
             switch (cmd) {
                 case "createProducts" : return createProducts(db, data);
@@ -36,18 +35,18 @@ public class cmdExecutor{
         return "OK";
     }
 
-    private static String createProducts(salesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
+    private static String createProducts(SalesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
         StringBuffer buf = new StringBuffer();
         buf.append("ProductsCreated:");
         List<ClusterOne> olist = getListObj(data);
         for (ClusterOne co : olist){
-            Product p = entityBuilder.createProduct(co, data.get("office"));
+            Product p = EntityBuilder.createProduct(co, data.get("office"));
             db.createProduct(p);
             buf.append(p.getInfo());
         }
         return buf.toString();
     }
-    private static String getProducts(salesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
+    private static String getProducts(SalesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
         StringBuffer buf = new StringBuffer();
         buf.append("ProductsSelected:");
         int size = data.size("");
@@ -57,18 +56,18 @@ public class cmdExecutor{
         return buf.toString();
     }
 
-    private static String createManagers(salesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
+    private static String createManagers(SalesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
         StringBuffer buf = new StringBuffer();
         buf.append("ManagersCreated:");
         List<ClusterOne> olist = getListObj(data);
         for (ClusterOne co : olist){
-            Manager p = entityBuilder.createManager(co, data.get("office"));
+            Manager p = EntityBuilder.createManager(co, data.get("office"));
             db.createManager(p);
             buf.append(p.getInfo());
         }
         return buf.toString();
     }
-    private static String getManagers(salesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
+    private static String getManagers(SalesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
         StringBuffer buf = new StringBuffer();
         buf.append("ManagersSelected:");
         int size = data.size("");
@@ -78,18 +77,18 @@ public class cmdExecutor{
         return buf.toString();
     }
 
-    private static String createClients(salesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
+    private static String createClients(SalesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
         StringBuffer buf = new StringBuffer();
         buf.append("ClientsCreated:");
         List<ClusterOne> olist = getListObj(data);
         for (ClusterOne co : olist){
-            Client p = entityBuilder.createClient(co, data.get("office"));
+            Client p = EntityBuilder.createClient(co, data.get("office"));
             db.createClient(p);
             buf.append(p.getInfo());
         }
         return buf.toString();
     }
-    private static String getClients(salesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
+    private static String getClients(SalesCRUD db, ClusterOne data) throws ClusterException, CRUDException {
         StringBuffer buf = new StringBuffer();
         buf.append("ClientsSelected:");
         int size = data.size("");

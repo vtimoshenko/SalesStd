@@ -41,7 +41,7 @@ public class ClusterException extends Exception
 	public 		ClusterException (String nMessage, ClusterOne Subject)
 	{
 		Message = nMessage;
-		Dump = Subject.GetJSON();
+		Dump = Subject.getJSON();
 	}
 	/**
 	 * @return сообщение об ошибке
