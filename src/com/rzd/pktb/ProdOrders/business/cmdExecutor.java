@@ -10,11 +10,13 @@ import com.rzd.pktb.ProdOrders.entity.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by SimpleUser on 02.07.2016.
  */
-public class cmdExecutor {
+public class cmdExecutor{
+
     public static String cmdExec(String cmd, salesCRUD db, ClusterOne data, String office){
         try {
             switch (cmd) {

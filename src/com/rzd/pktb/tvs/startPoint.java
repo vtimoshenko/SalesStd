@@ -16,10 +16,9 @@ public class startPoint {
         List<String> sList;
         try {
             sList = Files.readAllLines(Paths.get("inputCmd.txt"));
-            sp.startProcess(sList);
+            sp.startParallelProcess(sList);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

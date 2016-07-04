@@ -5,9 +5,8 @@ import com.rzd.pktb.JSONCluster.ClusterOne;
 import com.rzd.pktb.ProdOrders.crud.salesCRUD;
 import com.rzd.pktb.ProdOrders.crud.slowCRUD;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Created by SimpleUser on 08.06.2016.
@@ -40,8 +39,54 @@ public class SalesProcess {
         }
     }
 
-    public String startProcess(List<String> messages){
-//        System.out.println(messages.size() + "<-- size");
+    public String startParallelProcess(List<String> messages){
+        System.out.println(new Date());
+        Queue<Future> results = new ConcurrentLinkedQueue<Future>();
+        ExecutorService service = Executors.newFixedThreadPool(4);
+
+        for (String msg : messages){
+            ClusterOne message = new ClusterOne();
+            try {
+                message.GetFromString(msg);
+                //МНОГОПОТОЧНОСТЬ
+                String cmd = message.get("cmd");
+                String office = message.get("office");
+                if (!officeDs.containsKey(office)) continue;
+                results.add( service.submit(new Callable() {
+                    public String call() throws ClusterException {
+                        String result = cmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message.getPart("data"), office);
+                        return result;
+                    }
+                }) );
+                //System.out.println(result);
+            } catch (ClusterException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            while (results.size()>0){
+                for (Future f : results){
+                    if (f.isDone()){
+                        System.out.println((String)f.get());
+                        results.remove(f);
+                    }
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        service.shutdown();
+        System.out.println(new Date());
+        return "";
+    }
+
+
+
+
+    public String startSequenceProcess(List<String> messages){
+        System.out.println(new Date());
 /*
         Iterator<String> keys =  ds.keySet().iterator();
         while (keys.hasNext()) {
@@ -55,22 +100,19 @@ public class SalesProcess {
         }
 */
 
-
         for (String msg : messages){
-//            System.out.println("for call");
             ClusterOne message = new ClusterOne();
             try {
                 message.GetFromString(msg);
-                //ТУТ ДОЛЖНА БЫТЬ МНОГОПОТОЧНОСТЬ
                 String cmd = message.get("cmd");
                 String office = message.get("office");
                 if (!officeDs.containsKey(office)) continue;
-                String result = cmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message.getPart("data"), office);
-                System.out.println(result);
+                System.out.println(cmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message.getPart("data"), office));
             } catch (ClusterException e) {
                 e.printStackTrace();
             }
         }
+        System.out.println(new Date());
         return "";
     }
 }
