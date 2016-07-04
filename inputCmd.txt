@@ -1,3 +1,6 @@
 { "office":"Moscow 1", "cmd":"createProducts", "data":{"0":{"id":"0","supplyPrice":"50000","vendorCode":"gibson SG special"}, "1":{"id":"1","supplyPrice":"30000","vendorCode":"gibson LP black"}} }
 { "office":"Moscow 1", "cmd":"createProducts", "data":{"0":{"id":"2","supplyPrice":"50000","vendorCode":"gibson SG special"}, "1":{"id":"3","supplyPrice":"30000","vendorCode":"gibson LP black"}} }
 { "office":"Moscow 1", "cmd":"createProducts", "data":{"0":{"id":"4","supplyPrice":"50000","vendorCode":"gibson SG special"}, "1":{"id":"5","supplyPrice":"30000","vendorCode":"gibson LP black"}} }
+{ "office":"DB1", "cmd":"createProducts", "data":{"0":{"id":"0","supplyPrice":"50000","vendorCode":"gibson SG special"}, "1":{"id":"1","supplyPrice":"30000","vendorCode":"gibson LP black"}} }
+{ "office":"DB1", "cmd":"createProducts", "data":{"0":{"id":"2","supplyPrice":"50000","vendorCode":"gibson SG special"}, "1":{"id":"3","supplyPrice":"30000","vendorCode":"gibson LP black"}} }
+{ "office":"DB1", "cmd":"createProducts", "data":{"0":{"id":"4","supplyPrice":"50000","vendorCode":"gibson SG special"}, "1":{"id":"5","supplyPrice":"30000","vendorCode":"gibson LP black"}} }

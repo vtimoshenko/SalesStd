@@ -43,7 +43,6 @@ public class SalesProcess {
         System.out.println(new Date());
         Queue<Future> results = new ConcurrentLinkedQueue<Future>();
         ExecutorService service = Executors.newFixedThreadPool(4);
-
         for (String msg : messages){
             ClusterOne message = new ClusterOne();
             try {
@@ -54,11 +53,9 @@ public class SalesProcess {
                 if (!officeDs.containsKey(office)) continue;
                 results.add( service.submit(new Callable() {
                     public String call() throws ClusterException {
-                        String result = cmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message.getPart("data"), office);
-                        return result;
+                        return cmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message/*.getPart("data")*/);
                     }
                 }) );
-                //System.out.println(result);
             } catch (ClusterException e) {
                 e.printStackTrace();
             }
@@ -82,9 +79,6 @@ public class SalesProcess {
         return "";
     }
 
-
-
-
     public String startSequenceProcess(List<String> messages){
         System.out.println(new Date());
 /*
@@ -107,7 +101,7 @@ public class SalesProcess {
                 String cmd = message.get("cmd");
                 String office = message.get("office");
                 if (!officeDs.containsKey(office)) continue;
-                System.out.println(cmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message.getPart("data"), office));
+                System.out.println(cmdExecutor.cmdExec(cmd,ds.get(officeDs.get(office)),message/*.getPart("data")*/));
             } catch (ClusterException e) {
                 e.printStackTrace();
             }

@@ -20,6 +20,13 @@
             "offices" : ["Vladivostok 1", "East region"],
             "minLat" : "1000",
             "maxLat" : "8000"
+        },
+        {
+            "name" : "DBCOD",
+            "type" : "com.rzd.pktb.ProdOrders.postgreSQL.postgreSales",
+            "offices" : ["DB1"],
+            "minLat" : "1000",
+            "maxLat" : "5000"
         }
     ]
 }
